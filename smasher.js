@@ -10,9 +10,20 @@ let bg;
 let song;
 let tapSound;
 let boomSound;
+let life3;
+let life2;
+let life1;
+let life0;
+let trophy;
 
 function setup() {
-    bg = loadImage('images/bg-mobile.png');
+    bg = loadImage('images/bg-mobile.jpg');
+    life3 = loadImage('images/life-3.png');
+    life2 = loadImage('images/life-2.png');
+    life1 = loadImage('images/life-1.png');
+    life0 = loadImage('images/life-0.png');
+    trophy = loadImage('images/trophy.png');
+
     // song = loadSound('audio/bg-sound.mp3');
     // tapSound = loadSound('audio/tap-sound.wav');
     // boomSound = loadSound('audio/boomb-sound.wav');
@@ -68,13 +79,22 @@ function handleBugs() {
     for (var i = bugs.length - 1; i >= 0; i--) {
         bugs[i].update();
         bugs[i].draw();
+        if (life === 3) {
+            image(life3, 320, 0, 70, 50);
+        } else if (life === 2) {
+            image(life2, 320, 0, 70, 50);
+        } else if (life === 1) {
+            image(life1, 320, 0, 70, 50);
+        }
 
         if (bugs[i].position.y > height && !bugs[i].type) {
             // if the bug is off the screen and it's a bad bug
             life--;
             if (life === 0) {
+                image(life0, 320, 0, 70, 50);
                 endGame();
             }
+
         }
 
         if (bugs[i].squashed) {
@@ -136,13 +156,10 @@ function gameOver(playing) {
  * draws the score
  */
 function drawScore() {
+    image(trophy, 0, 10, 30, 30);
     fill(255);
     noStroke();
-    text('Hit = ' + score, 10, 30);
-
-    fill(255);
-    noStroke();
-    text('Life = ' + life, 290, 30);
+    text(score, 30, 35);
 }
 
 /**
