@@ -7,8 +7,11 @@ var playing; // aids with asychronous endGame() function
 
 var speed; // speed at which the bugs travel
 var bugChance; // chance of a new bug being pushed
+var bg;
 
 function setup() {
+    bg = loadImage('images/bg-mobile.png');
+
     createCanvas(400, 600);
 
     score = 0;
@@ -22,7 +25,7 @@ function setup() {
 }
 
 function draw() {
-    background(51);
+    background(bg);
 
     handleBugs();
     attemptNewBug(frameCount);
@@ -59,12 +62,10 @@ function mousePressed() {
 function handleBugs() {
     for (var i = bugs.length - 1; i >= 0; i--) {
 
-        /* update & draw */
         bugs[i].update();
         bugs[i].draw();
 
         if (bugs[i].position.y > height && !bugs[i].type) {
-            // if the bug is off the screen and it's a bad bug
             endGame();
         }
 
@@ -137,7 +138,6 @@ function gameOver(playing) {
  */
 function drawScore() {
 
-    /* draw score */
     fill(255);
     noStroke();
     text(score, 10, 40);
