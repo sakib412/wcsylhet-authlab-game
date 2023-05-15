@@ -8,9 +8,17 @@ var playing; // aids with asychronous endGame() function
 var speed; // speed at which the bugs travel
 var bugChance; // chance of a new bug being pushed
 var bg;
+var song;
+var tapSound;
+var boomSound;
 
 function setup() {
     bg = loadImage('images/bg-mobile.png');
+    song = loadSound('audio/bg-sound.mp3');
+
+    tapSound = loadSound('audio/tap-sound.wav');
+    boomSound = loadSound('audio/boomb-sound.wav');
+
 
     createCanvas(400, 600);
 
@@ -42,14 +50,19 @@ function draw() {
  */
 function mousePressed() {
     for (var i = 0; i < bugs.length; i++) {
-
         // update bug's state
         bugs[i].squashed = bugs[i].squashedBy(mouseX, mouseY);
+        tapSound.play();
 
         // if the bug is good, end the game
-        if (bugs[i].squashed && bugs[i].type)
+        if (bugs[i].squashed && bugs[i].type) {
             endGame();
+            boomSound.play();
+        }
+
     }
+
+    song.play();
 
     totalClicks++;
 }
@@ -150,4 +163,5 @@ function endGame() {
 
     playing = false;
     noLoop();
+    song.stop();
 }

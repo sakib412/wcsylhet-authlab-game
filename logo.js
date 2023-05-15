@@ -18,7 +18,6 @@ let img  =[];
 let boom;
 
 function preload() {
-    console.log('on preload')
     for (let i = 1; i < 8; i++) {
         img.push(loadImage('images/' + i + '.png'))
     }
