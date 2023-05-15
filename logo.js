@@ -6,12 +6,12 @@ function Logo(x, type) {
     this.origin = x; // from what point to oscillate
 
     this.position = createVector(0, 0);
-    this.serpentine = random(3) + 3; // serpentine distance
+    this.serpentine = random(3) + 4; // serpentine distance
 
     this.type = type; // false = ant, true = bee
     this.squashed = false; // bug state
 
-    this.radius = 50; // size of bug
+    this.radius = 60; // size of bug
 }
 
 let img  =[];
@@ -27,23 +27,7 @@ function preload() {
  * draws the insect based upon type
  */
 Logo.prototype.draw = function() {
-    //stroke(255);
-    //strokeWeight(3);
-    //fill(this.type ? "#00FFFF" : "#FF4444");
-    //ellipse(this.position.x, this.position.y, this.radius);
-
-
-
-    //var img = loadImage('images/abcd.png')
-
-
     image(this.selectedImage, this.position.x - (this.radius/2), this.position.y - (this.radius /2), this.radius, this.radius)
-
-
-
-    console.log(img)
-
-    //drawImage(img, 10, 10);
 };
 
 /**
