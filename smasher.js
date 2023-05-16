@@ -5,45 +5,68 @@ let totalClicks; // how many times the user has clicked (for accuracy)
 let playing; // aids with asychronous endGame() function
 let speed; // speed at which the bugs travel
 let bugChance; // chance of a new bug being pushed
+let startButton;
 let button;
 let bg;
-let song;
-let tapSound;
-let boomSound;
 let life3;
 let life2;
 let life1;
 let life0;
 let trophy;
+let screen = 0;
+const song = new Audio('audio/bg-sound.mp3');
+const tapSound = new Audio('audio/tap-sound.wav');
+const boomSound = new Audio('audio/boomb-sound.wav');
 
 function setup() {
+    createCanvas(400, 600);
     bg = loadImage('images/bg-mobile.jpg');
     life3 = loadImage('images/life-3.png');
     life2 = loadImage('images/life-2.png');
     life1 = loadImage('images/life-1.png');
     life0 = loadImage('images/life-0.png');
     trophy = loadImage('images/trophy.png');
-
-    // song = loadSound('audio/bg-sound.mp3');
-    // tapSound = loadSound('audio/tap-sound.wav');
-    // boomSound = loadSound('audio/boomb-sound.wav');
-
-    createCanvas(400, 600);
-    score = 0;
-    totalClicks = 0;
-    playing = true;
-    speed = 8;
-    bugChance = 0.8;
-    textSize(30);
 }
 
 function draw() {
-    background(bg);
-    handleBugs();
-    attemptNewBug(frameCount);
-    handleDifficulty(frameCount, score);
-    drawScore();
-    gameOver(playing);
+    background(0);
+    if (screen === 0) {
+        startScreen();
+    }
+    if (screen === 1) {
+        startGame();
+    }
+    if (screen === 2) {
+        endGame();
+    }
+
+    function startScreen() {
+        background(bg);
+        fill(255);
+        textAlign(CENTER);
+        textSize(20);
+        text("Welcome To AuthLab Game!", width / 2, height / 2);
+        text("Tap To Start", width / 2, height / 2 + 30);
+        restart();
+    }
+
+    function startGame() {
+        background(bg);
+        handleBugs();
+        attemptNewBug(frameCount);
+        handleDifficulty(frameCount, score);
+        drawScore();
+        gameOver(playing);
+    }
+
+    function restart() {
+        score = 0;
+        totalClicks = 0;
+        playing = true;
+        speed = 8;
+        bugChance = 0.8;
+        textSize(30);
+    }
 }
 
 /**
@@ -51,20 +74,22 @@ function draw() {
  * squashes bugs
  */
 function mousePressed() {
+    screen = 1;
+
     for (var i = 0; i < bugs.length; i++) {
         // update bug's state
         bugs[i].squashed = bugs[i].squashedBy(mouseX, mouseY);
-        // tapSound.play();
+        tapSound.play();
 
         // if the bug is good, end the game
         if (bugs[i].squashed && bugs[i].type) {
             score--;
+            boomSound.play();
             endGame();
-            // boomSound.play();
         }
     }
 
-    // song.play();
+    song.play();
 
     totalClicks++;
 }
@@ -159,7 +184,7 @@ function drawScore() {
     image(trophy, 0, 10, 30, 30);
     fill(255);
     noStroke();
-    text(score, 30, 35);
+    text(score, 40, 36);
 }
 
 /**

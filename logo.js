@@ -1,4 +1,4 @@
-function Logo(x, type) {
+function Logo(x, type, speed) {
     this.selectedImage =  !type ?
         img[Math.floor(Math.random() * img.length)] :
         loadImage('images/boom-1.gif');
@@ -12,6 +12,7 @@ function Logo(x, type) {
     this.squashed = false; // bug state
 
     this.radius = 60; // size of bug
+    this.speed = speed;
 }
 
 let img  =[];
