@@ -134,7 +134,7 @@ function handleBugs() {
  * attempts to push a new bug
  */
 function attemptNewBug(frame) {
-    if (frame % 30 === 0) { // every second
+    if (frame % 15 === 0) { // every second
         if (random() < bugChance) { // probability of a new bug
             var x = random(width / 2) + width / 4; // only in the middle
             var type = (random() > 0.8);
@@ -149,7 +149,7 @@ function attemptNewBug(frame) {
  * is set based upon frame and score
  */
 function handleDifficulty(frame, score) {
-    if (frame % 30 === 0) {
+    if (frame % 15 === 0) {
         // update once every second
         bugChance = map(score, 0, 500, 0.4, 0.999);
         speed = map(score, 0, 500, 3, 30);
