@@ -41,7 +41,6 @@ and (max-device-width: 1024px) {
     .p5Canvas {
         width: 400px;
         height: 400px;
-        background-color: orange;
         color: black;
     }
 }
@@ -52,7 +51,6 @@ and (orientation: portrait) {
     .p5Canvas {
         width: 200px;
         height: 200px;
-        background-color: red;
         color: #fff;
     }
 }
@@ -63,7 +61,6 @@ and (orientation: landscape) {
     .p5Canvas {
         width: 400px;
         height: 200px;
-        background-color: cyan;
         color: black;
     }
 }

@@ -1,5 +1,6 @@
 let bugs = [];
 let score;
+let accuracy;
 let life;
 let totalClicks; // how many times the user has clicked (for accuracy)
 let playing; // aids with asychronous endGame() function
@@ -11,8 +12,9 @@ let life3;
 let life2;
 let life1;
 let life0;
-let trophy;
+let cart;
 let screen = 0;
+const retry = 1;
 const song = new Audio('audio/bg-sound.mp3');
 const tapSound = new Audio('audio/tap-sound.wav');
 const boomSound = new Audio('audio/boomb-sound.wav');
@@ -21,7 +23,6 @@ function setup() {
     let canvWidth = 400;
     let canvHeight = 600;
 
-    console.log(window.screen.width)
     if (window.screen.width === 820) {
         canvWidth = 820;
         canvHeight = 1180;
@@ -38,7 +39,7 @@ function setup() {
     life2 = loadImage('images/life-2.png');
     life1 = loadImage('images/life-1.png');
     life0 = loadImage('images/life-0.png');
-    trophy = loadImage('images/trophy.png');
+    cart = loadImage('images/cart.png');
 }
 
 function draw() {
@@ -57,8 +58,10 @@ function draw() {
         background(bg);
         fill(255);
         textAlign(CENTER);
+        textSize(25);
+        text("Welcome To AuthLab Game!", width / 2, height / 2.3);
         textSize(20);
-        text("Welcome To AuthLab Game!", width / 2, height / 2);
+        text("Collect our product in your cart.", width / 2, height / 2);
         text("Tap To Start", width / 2, height / 2 + 30);
         restart();
     }
@@ -177,18 +180,21 @@ function gameOver(playing) {
         // only if the game has ended
         fill(255);
         noStroke();
-        textSize(60);
+        textSize(40);
         textAlign(CENTER);
-        text("Game Over!", width / 2, height / 2);
+        text("Game Over!", width / 2, height / 3.3);
         // prevent division by zero
         totalClicks = (totalClicks === 0) ? 1 : totalClicks;
-        var accuracy = Math.round(score / totalClicks * 100);
-        console.log(accuracy);
+        accuracy = Math.round(score / totalClicks * 100);
+        textSize(20);
+        text("You have collected " + score + " products. " +
+            "\n Submit your point to participate our \n competition. " +
+            "The result will be sent \n to your email today at 5 pm",
+            width / 2, height / 2.5);
         textSize(30);
         text("Total Score: " + score , width / 2, height / 2 + 70);
-        // text("Total Score: " + accuracy + '%' , width / 2, height / 2 + 70);
-        textAlign(LEFT);
-        textSize(30);
+        // textSize(15);
+        // text("Game Accuracy: " + accuracy + '%' , width / 2, height / 2 + 100);
     }
 }
 
@@ -196,24 +202,26 @@ function gameOver(playing) {
  * draws the score
  */
 function drawScore() {
-    image(trophy, 0, 10, 30, 30);
+    image(cart, 0, 5, 40, 40);
     fill(255);
     noStroke();
-    text(score, 40, 36);
+    text(score, 50, 37);
 }
 
 /**
  * stops the loop, triggers game over
  */
 function endGame() {
+    background('#000000');
     playing = false;
     noLoop();
     replayButton();
     submitButton();
+    song.pause();
 }
 
 function replayButton() {
-    button = createButton('Replay');
+    button = createButton('Retry');
     button.addClass('replay-button');
     button.center();
     button.style('padding', '16px 32px');
@@ -224,10 +232,14 @@ function replayButton() {
     button.style('left', '50%');
     button.style('marginLeft', '-110px');
     button.style('cursor', 'pointer');
-    // button.position(width / 2.5, (height + 200) / 2);
 
-    button.mousePressed(function () {
+    // if (retry===0) {
+    //     button.style('display', 'none');
+    // }
+
+    button.mousePressed(function (retry) {
         window.location.reload();
+        // retry--;
     });
 }
 
@@ -244,9 +256,24 @@ function submitButton() {
     button.style('right', '50%');
     button.style('marginRight', '-110px');
     button.style('cursor', 'pointer');
-    // button.position(width / 2, (height + 100) / 3);
+    button.style('backgroundColor', '#1AA3ED');
+    button.style('color', '#fff');
 
-    // button.mousePressed(function () {
-    //     window.location.reload();
-    // });
+    button.mousePressed(redirect)
+}
+
+function redirect() {
+    const data = score + ' ' + accuracy;
+    const key = 'auth-game-key';
+
+    const encryptedData = CryptoJS.AES.encrypt(data, key).toString();
+
+    //decryption code
+    // const key = 'auth-game-key';
+    // const decryptedData = CryptoJS.AES.decrypt(encryptedData, key).toString(CryptoJS.enc.Utf8);
+
+    let url = 'http://game.test/submitForm.html' + '?data=' + encryptedData;
+
+    // Redirect the page to the specified URL
+    window.location.href = url;
 }
