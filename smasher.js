@@ -5,7 +5,6 @@ let totalClicks; // how many times the user has clicked (for accuracy)
 let playing; // aids with asychronous endGame() function
 let speed; // speed at which the bugs travel
 let bugChance; // chance of a new bug being pushed
-let startButton;
 let button;
 let bg;
 let life3;
@@ -19,7 +18,21 @@ const tapSound = new Audio('audio/tap-sound.wav');
 const boomSound = new Audio('audio/boomb-sound.wav');
 
 function setup() {
-    createCanvas(400, 600);
+    let canvWidth = 400;
+    let canvHeight = 600;
+
+    console.log(window.screen.width)
+    if (window.screen.width === 820) {
+        canvWidth = 820;
+        canvHeight = 1180;
+    } else if (window.screen.width === 768 || window.screen.width === 771) {
+        canvWidth = 768;
+        canvHeight = 1024;
+    } else if (window.screen.width === 453 || window.screen.width === 375) {
+        canvWidth = 375;
+        canvHeight = 812;
+    }
+    createCanvas(canvWidth, canvHeight);
     bg = loadImage('images/bg-mobile.jpg');
     life3 = loadImage('images/life-3.png');
     life2 = loadImage('images/life-2.png');
@@ -170,8 +183,10 @@ function gameOver(playing) {
         // prevent division by zero
         totalClicks = (totalClicks === 0) ? 1 : totalClicks;
         var accuracy = Math.round(score / totalClicks * 100);
+        console.log(accuracy);
         textSize(30);
-        text("Total Score: " + accuracy + "%", width / 2, height / 2 + 70);
+        text("Total Score: " + score , width / 2, height / 2 + 70);
+        // text("Total Score: " + accuracy + '%' , width / 2, height / 2 + 70);
         textAlign(LEFT);
         textSize(30);
     }
@@ -194,17 +209,44 @@ function endGame() {
     playing = false;
     noLoop();
     replayButton();
+    submitButton();
 }
 
 function replayButton() {
     button = createButton('Replay');
+    button.addClass('replay-button');
     button.center();
     button.style('padding', '16px 32px');
     button.style('borderRadius', '5px');
     button.style('border', 'none');
-    button.position(width / 2.5, (height + 200) / 2);
+    button.style('top', 'auto');
+    button.style('bottom', '25%');
+    button.style('left', '50%');
+    button.style('marginLeft', '-110px');
+    button.style('cursor', 'pointer');
+    // button.position(width / 2.5, (height + 200) / 2);
 
     button.mousePressed(function () {
         window.location.reload();
     });
+}
+
+function submitButton() {
+    button = createButton('Submit');
+    button.addClass('submit-button');
+    button.center();
+    button.style('padding', '16px 32px');
+    button.style('borderRadius', '5px');
+    button.style('border', 'none');
+    button.style('top', 'auto');
+    button.style('bottom', '25%');
+    button.style('left', 'auto');
+    button.style('right', '50%');
+    button.style('marginRight', '-110px');
+    button.style('cursor', 'pointer');
+    // button.position(width / 2, (height + 100) / 3);
+
+    // button.mousePressed(function () {
+    //     window.location.reload();
+    // });
 }
