@@ -13,6 +13,7 @@ function Logo(x, type, speed) {
 
     this.radius = 60; // size of bug
     this.speed = speed;
+    this.onRemoving = false;
 }
 
 let img  =[];

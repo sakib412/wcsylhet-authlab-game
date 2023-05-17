@@ -221,58 +221,44 @@ function endGame() {
 }
 
 function replayButton() {
-    button = createButton('Retry');
-    button.addClass('replay-button');
-    button.center();
-    button.style('padding', '16px 32px');
-    button.style('borderRadius', '5px');
-    button.style('border', 'none');
-    button.style('top', 'auto');
-    button.style('bottom', '25%');
-    button.style('left', '50%');
-    button.style('marginLeft', '-110px');
-    button.style('cursor', 'pointer');
 
-    // if (retry===0) {
-    //     button.style('display', 'none');
-    // }
 
-    button.mousePressed(function (retry) {
-        window.location.reload();
-        // retry--;
-    });
+    new Button(
+        'Retry',
+        'replay-button',
+        ()=>{
+            window.location.reload();
+        },
+        '#fff',
+        '#000',
+        null,
+        '22%'
+    ).init()
+
 }
 
 function submitButton() {
-    button = createButton('Submit');
-    button.addClass('submit-button');
-    button.center();
-    button.style('padding', '16px 32px');
-    button.style('borderRadius', '5px');
-    button.style('border', 'none');
-    button.style('top', 'auto');
-    button.style('bottom', '25%');
-    button.style('left', 'auto');
-    button.style('right', '50%');
-    button.style('marginRight', '-110px');
-    button.style('cursor', 'pointer');
-    button.style('backgroundColor', '#1AA3ED');
-    button.style('color', '#fff');
-
-    button.mousePressed(redirect)
+    new Button(
+        'Submit',
+        'submit-button',
+        redirect,
+        '#1AA3ED',
+        '#fff',
+        '50%',
+        'auto'
+    ).init()
 }
 
 function redirect() {
     const data = score + ' ' + accuracy;
-    const key = 'auth-game-key';
-
-    const encryptedData = CryptoJS.AES.encrypt(data, key).toString();
+    const encryptedData = btoa(data);
 
     //decryption code
     // const key = 'auth-game-key';
     // const decryptedData = CryptoJS.AES.decrypt(encryptedData, key).toString(CryptoJS.enc.Utf8);
 
-    let url = 'http://game.test/submitForm.html' + '?data=' + encryptedData;
+    // let url = 'http://game.test/submitForm.html' + '?data=' + encryptedData;
+    let url = 'https://abrasiveterritory.s1-tastewp.com/authlab-games/?data=' + encryptedData;
 
     // Redirect the page to the specified URL
     window.location.href = url;
